@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J'apprends mes mots de dictée en CE2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #F7931E;
+            --accent: #FFC845;
+            --success: #4ECDC4;
+            --info: #95E1D3;
+            --danger: #E63946;
+            --box1: #FF6B6B;
+            --box2: #4ECDC4;
+            --box3: #95E1D3;
+            --bg-main: #FFF8F0;
+            --bg-card: #FFFFFF;
+            --text-dark: #2D3142;
+            --text-light: #6B7280;
+            --shadow: 0 4px 20px rgba(255, 107, 53, 0.15);
+            --shadow-hover: 0 8px 30px rgba(255, 107, 53, 0.25);
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE8D6 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.3;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Page de connexion */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 0 rgba(255, 107, 53, 0.1);
+        }
+
+        .login-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .user-list {
+            margin-bottom: 30px;
+        }
+
+        .user-item {
+            background: linear-gradient(135deg, var(--info) 0%, var(--success) 100%);
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(78, 205, 196, 0.2);
+        }
+
+        .user-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        .delete-user {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .delete-user:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 10px rgba(230, 57, 70, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid var(--info);
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s;
+            background: #F9FAFB;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--success);
+            transform: scale(1.02);
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--info) 0%, var(--success) 100%);
+            margin-left: 10px;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+            padding: 10px 25px;
+            font-size: 1rem;
+        }
+
+        /* Page principale */
+        .main-page {
+            padding: 20px 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-user {
+            color: white;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            background: var(--bg-card);
+            border: 3px solid var(--info);
+            padding: 15px 30px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(149, 225, 211, 0.2);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--success) 0%, var(--info) 100%);
+            color: white;
+            border-color: var(--success);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        .tab:hover:not(.active) {
+            border-color: var(--success);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Boîtes Leitner */
+        .boxes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .leitner-box {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 4px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leitner-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: currentColor;
+        }
+
+        .leitner-box.box1 {
+            border-color: var(--box1);
+            color: var(--box1);
+        }
+
+        .leitner-box.box2 {
+            border-color: var(--box2);
+            color: var(--box2);
+        }
+
+        .leitner-box.box3 {
+            border-color: var(--box3);
+            color: var(--box3);
+        }
+
+        .leitner-box:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .box-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .box-count {
+            background: currentColor;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .box-schedule {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .box-words {
+            background: #F9FAFB;
+            border-radius: 10px;
+            padding: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .word-preview {
+            padding: 5px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .btn-practice {
+            width: 100%;
+            margin-top: 15px;
+            background: linear-gradient(135deg, var(--success) 0%, var(--info) 100%);
+        }
+
+        /* Sélection de listes */
+        .dictee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dictee-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .dictee-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.03);
+            box-shadow: var(--shadow);
+        }
+
+        .dictee-number {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            flex: 1;
+            min-width: 50px;
+            padding: 8px;
+            border: 2px solid;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .color-option.jaune {
+            border-color: #FFC845;
+            color: #F7931E;
+        }
+
+        .color-option.vert {
+            border-color: #4ECDC4;
+            color: #4ECDC4;
+        }
+
+        .color-option.violet {
+            border-color: #9B59B6;
+            color: #9B59B6;
+        }
+
+        .color-option.selected {
+            background: currentColor;
+            color: white;
+        }
+
+        .color-option:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-add-selected {
+            margin-top: 20px;
+        }
+
+        /* Progression */
+        .progress-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .progress-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #F9FAFB;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--success);
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 5px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--info) 100%);
+            transition: width 0.5s;
+            border-radius: 5px;
+        }
+
+        .delete-list-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .delete-list-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Page de révision */
+        .practice-page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .practice-header {
+            background: linear-gradient(135deg, var(--success) 0%, var(--info) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            color: white;
+        }
+
+        .practice-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .word-display {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .word-number {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .listen-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+            margin-bottom: 30px;
+        }
+
+        .listen-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .listen-btn:active {
+            transform: scale(0.98);
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 20px;
+            border: 4px solid var(--info);
+            border-radius: 15px;
+            font-size: 1.5rem;
+            font-family: 'Quicksand', sans-serif;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--success);
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+        }
+
+        .answer-input.correct {
+            border-color: var(--success);
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .answer-input.incorrect {
+            border-color: var(--danger);
+            background: rgba(230, 57, 70, 0.1);
+        }
+
+        .virtual-keyboard {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .key {
+            background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
+            border: 2px solid #D1D5DB;
+            border-radius: 8px;
+            padding: 12px;
+            min-width: 45px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .key:hover {
+            background: linear-gradient(135deg, #E5E7EB 0%, #D1D5DB 100%);
+            transform: translateY(-2px);
+        }
+
+        .key:active {
+            transform: translateY(0);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .key.space {
+            min-width: 200px;
+        }
+
+        .key.backspace {
+            min-width: 80px;
+            background: linear-gradient(135deg, var(--danger) 0%, #DC2626 100%);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .key.backspace:hover {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+        }
+
+        .validation-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-validate {
+            flex: 1;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s;
+        }
+
+        .modal-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: var(--text-light);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .manual-input-group {
+            margin-bottom: 15px;
+        }
+
+        .manual-input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--info);
+            border-radius: 10px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+        }
+
+        .manual-input-group input:focus {
+            outline: none;
+            border-color: var(--success);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--success) 0%, var(--info) 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(78, 205, 196, 0.4);
+            z-index: 2000;
+            animation: slideInRight 0.4s ease-out;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Espace enseignant */
+        .teacher-panel {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .teacher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .dictee-editor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .dictee-editor-card {
+            background: #F9FAFB;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--info);
+        }
+
+        .dictee-editor-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .color-section {
+            margin-bottom: 15px;
+        }
+
+        .color-section-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-section-title.jaune { color: #F7931E; }
+        .color-section-title.vert { color: #4ECDC4; }
+        .color-section-title.violet { color: #9B59B6; }
+
+        .word-list-editor {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border: 2px solid #D1D5DB;
+            border-radius: 10px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        .word-list-editor:focus {
+            outline: none;
+            border-color: var(--success);
+        }
+
+        input.word-list-editor {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        /* Révision responsive */
+        .practice-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .practice-input-section {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .practice-feedback-section {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        @media (min-width: 1024px) {
+            .practice-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .practice-page {
+                padding: 10px;
+            }
+
+            .word-display {
+                padding: 30px 20px;
+            }
+
+            .practice-header {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-title {
+                font-size: 2rem;
+            }
+
+            .header-title {
+                font-size: 1.5rem;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .boxes-container {
+                grid-template-columns: 1fr;
+            }
+
+            .dictee-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .dictee-editor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .key {
+                min-width: 30px;
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+
+            .key.space {
+                min-width: 120px;
+            }
+
+            .key.backspace {
+                min-width: 70px;
+                font-size: 0.85rem;
+            }
+
+            .virtual-keyboard {
+                padding: 15px 10px;
+            }
+
+            .keyboard-row {
+                gap: 3px;
+                margin-bottom: 3px;
+            }
+
+            .answer-input {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+
+            .listen-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+
+            .word-display {
+                padding: 20px 15px;
+            }
+
+            .practice-input-section,
+            .practice-feedback-section {
+                padding: 20px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                width: 100%;
+                text-align: center;
+            }
+
+            .notification {
+                right: 10px;
+                left: 10px;
+                top: 10px;
+                font-size: 1rem;
+                padding: 15px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+
+            .login-title {
+                font-size: 1.6rem;
+            }
+
+            .practice-title {
+                font-size: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .key {
+                min-width: 25px;
+                padding: 6px;
+                font-size: 0.85rem;
+            }
+
+            .key.space {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="starsContainer"></div>
+
+    <!-- Page de connexion -->
+    <div id="loginPage" class="login-page">
+        <div class="login-card">
+            <h1 class="login-title">J'apprends mes mots de dictée en CE2</h1>
+            <p class="login-subtitle">📚 Révise tes mots avec la méthode Leitner</p>
+            
+            <div id="userListContainer" class="user-list"></div>
+
+            <div id="newUserForm">
+                <div class="input-group">
+                    <label>Ton prénom</label>
+                    <input type="text" id="newUsername" placeholder="Entre ton prénom">
+                </div>
+                <div class="input-group">
+                    <label>Mot de passe (pour protéger ta session)</label>
+                    <input type="password" id="newPassword" placeholder="Choisis un mot de passe">
+                </div>
+                <button class="btn" onclick="createUser()">Créer mon espace</button>
+                
+                <div style="margin-top: 30px; padding-top: 30px; border-top: 2px solid var(--info);">
+                    <button class="btn" style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);" onclick="showTeacherLogin()">
+                        👨‍🏫 Espace enseignant
+                    </button>
+                </div>
+            </div>
+
+            <div id="loginForm" class="hidden">
+                <div class="input-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="loginPassword" placeholder="Entre ton mot de passe">
+                </div>
+                <button class="btn" onclick="loginUser()">Se connecter</button>
+                <button class="btn btn-secondary" onclick="cancelLogin()">Annuler</button>
+            </div>
+
+            <div id="teacherLoginForm" class="hidden">
+                <div class="input-group">
+                    <label>Mot de passe enseignant</label>
+                    <input type="password" id="teacherPassword" placeholder="Mot de passe enseignant">
+                </div>
+                <button class="btn" onclick="loginTeacher()">Accéder à l'espace enseignant</button>
+                <button class="btn btn-secondary" onclick="cancelTeacherLogin()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page principale -->
+    <div id="mainPage" class="main-page hidden">
+        <div class="container">
+            <div class="header">
+                <h1 class="header-title">Mes mots de dictée</h1>
+                <div class="header-user">
+                    <span id="currentUserName"></span>
+                    <button class="btn btn-back" onclick="logout()">Retour</button>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('boxes')">Mes boîtes de révision</div>
+                <div class="tab" onclick="switchTab('progress')">Ma progression</div>
+                <div class="tab" onclick="switchTab('selection')">Ajouter des listes</div>
+            </div>
+
+            <!-- Onglet Boîtes -->
+            <div id="boxesTab" class="tab-content active">
+                <div class="boxes-container">
+                    <div class="leitner-box box1" onclick="showBoxWords(1)">
+                        <div class="box-header">
+                            <div class="box-title">Boîte 1</div>
+                            <div class="box-count" id="box1Count">0</div>
+                        </div>
+                        <div class="box-schedule">📅 Tous les jours</div>
+                        <div class="box-words" id="box1Preview"></div>
+                        <button class="btn btn-practice" onclick="startPractice(1)">Réviser</button>
+                    </div>
+
+                    <div class="leitner-box box2" onclick="showBoxWords(2)">
+                        <div class="box-header">
+                            <div class="box-title">Boîte 2</div>
+                            <div class="box-count" id="box2Count">0</div>
+                        </div>
+                        <div class="box-schedule">📅 Mardi, Jeudi, Samedi</div>
+                        <div class="box-words" id="box2Preview"></div>
+                        <button class="btn btn-practice" onclick="startPractice(2)">Réviser</button>
+                    </div>
+
+                    <div class="leitner-box box3" onclick="showBoxWords(3)">
+                        <div class="box-header">
+                            <div class="box-title">Boîte 3</div>
+                            <div class="box-count" id="box3Count">0</div>
+                        </div>
+                        <div class="box-schedule">📅 Mercredi, Dimanche</div>
+                        <div class="box-words" id="box3Preview"></div>
+                        <button class="btn btn-practice" onclick="startPractice(3)">Réviser</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet Progression -->
+            <div id="progressTab" class="tab-content">
+                <div class="progress-container">
+                    <h2 class="progress-title">Ma progression par dictée</h2>
+                    <div id="progressList"></div>
+                </div>
+            </div>
+
+            <!-- Onglet Sélection -->
+            <div id="selectionTab" class="tab-content">
+                <h2 class="progress-title">Sélectionne tes listes de mots</h2>
+                <div class="dictee-grid" id="dicteeGrid"></div>
+                <button class="btn btn-add-selected" onclick="addSelectedLists()">Ajouter les listes sélectionnées</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page espace enseignant -->
+    <div id="teacherPage" class="main-page hidden">
+        <div class="container">
+            <div class="header">
+                <h1 class="header-title">👨‍🏫 Espace enseignant</h1>
+                <div class="header-user">
+                    <button class="btn btn-back" onclick="logoutTeacher()">Retour</button>
+                </div>
+            </div>
+
+            <div class="teacher-panel">
+                <div class="teacher-header">
+                    <h2 class="progress-title" style="margin: 0;">Personnalisation des listes de mots</h2>
+                    <button class="btn" onclick="saveAndExportHTML()">💾 Enregistrer et télécharger HTML</button>
+                </div>
+                <p style="color: var(--text-light); margin-bottom: 20px;">
+                    Modifiez les mots de chaque dictée selon les besoins de votre classe. Entrez les mots séparés par des virgules.
+                </p>
+                <div id="teacherEditor"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page de révision -->
+    <div id="practicePage" class="practice-page hidden">
+        <div class="practice-header">
+            <h2 style="font-family: 'Fredoka', sans-serif; font-size: 2rem; margin-bottom: 10px;">
+                Révision - Boîte <span id="practiceBoxNumber"></span>
+            </h2>
+            <div class="practice-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="practiceCorrect">0</div>
+                    <div class="stat-label">Réussies</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="practiceTotal">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="practice-container">
+            <div class="practice-input-section">
+                <div class="word-number" id="wordNumber"></div>
+                <button class="listen-btn" onclick="speakWord()">🔊 Écouter le mot</button>
+                
+                <input type="text" class="answer-input" id="answerInput" placeholder="Écris le mot ici..." autocomplete="off">
+                
+                <div class="virtual-keyboard">
+                    <div class="keyboard-row">
+                        <div class="key" onclick="typeKey('a')">A</div>
+                        <div class="key" onclick="typeKey('z')">Z</div>
+                        <div class="key" onclick="typeKey('e')">E</div>
+                        <div class="key" onclick="typeKey('r')">R</div>
+                        <div class="key" onclick="typeKey('t')">T</div>
+                        <div class="key" onclick="typeKey('y')">Y</div>
+                        <div class="key" onclick="typeKey('u')">U</div>
+                        <div class="key" onclick="typeKey('i')">I</div>
+                        <div class="key" onclick="typeKey('o')">O</div>
+                        <div class="key" onclick="typeKey('p')">P</div>
+                    </div>
+                    <div class="keyboard-row">
+                        <div class="key" onclick="typeKey('q')">Q</div>
+                        <div class="key" onclick="typeKey('s')">S</div>
+                        <div class="key" onclick="typeKey('d')">D</div>
+                        <div class="key" onclick="typeKey('f')">F</div>
+                        <div class="key" onclick="typeKey('g')">G</div>
+                        <div class="key" onclick="typeKey('h')">H</div>
+                        <div class="key" onclick="typeKey('j')">J</div>
+                        <div class="key" onclick="typeKey('k')">K</div>
+                        <div class="key" onclick="typeKey('l')">L</div>
+                        <div class="key" onclick="typeKey('m')">M</div>
+                    </div>
+                    <div class="keyboard-row">
+                        <div class="key" onclick="typeKey('w')">W</div>
+                        <div class="key" onclick="typeKey('x')">X</div>
+                        <div class="key" onclick="typeKey('c')">C</div>
+                        <div class="key" onclick="typeKey('v')">V</div>
+                        <div class="key" onclick="typeKey('b')">B</div>
+                        <div class="key" onclick="typeKey('n')">N</div>
+                        <div class="key" onclick="typeKey('à')">À</div>
+                        <div class="key" onclick="typeKey('é')">É</div>
+                        <div class="key" onclick="typeKey('è')">È</div>
+                        <div class="key" onclick="typeKey('ê')">Ê</div>
+                    </div>
+                    <div class="keyboard-row">
+                        <div class="key" onclick="typeKey('ç')">Ç</div>
+                        <div class="key" onclick="typeKey('ù')">Ù</div>
+                        <div class="key" onclick="typeKey('ô')">Ô</div>
+                        <div class="key" onclick="typeKey('î')">Î</div>
+                        <div class="key" onclick="typeKey('â')">Â</div>
+                        <div class="key space" onclick="typeKey(' ')">Espace</div>
+                        <div class="key" onclick="typeKey('-')">-</div>
+                        <div class="key" onclick="typeKey('\'')">\'</div>
+                    </div>
+                    <div class="keyboard-row">
+                        <div class="key backspace" onclick="typeBackspace()">⌫ Effacer</div>
+                    </div>
+                </div>
+
+                <div class="validation-btns">
+                    <button class="btn btn-validate" onclick="validateAnswer()">Valider ma réponse</button>
+                    <button class="btn btn-back" onclick="endPractice()">Terminer</button>
+                </div>
+            </div>
+
+            <div class="practice-feedback-section" id="feedbackContainer">
+                <div style="text-align: center; color: var(--text-light);">
+                    <p style="font-size: 1.2rem; font-weight: 600;">💡 Conseil</p>
+                    <p>Écoute bien le mot et écris-le lettre par lettre.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données des dictées
+        const DICTEES_DATA = {
+            1: {
+                titre: "Roi de la forêt",
+                jaune: ["la France", "un peintre", "la précision", "le roi", "le soin", "le cerf", "un animal", "des animaux", "la forêt", "habiter", "représenter", "avec", "sur", "beaucoup"],
+                vert: ["les bois", "un arbre", "le ciel", "le soleil", "long", "longue", "gris", "grise", "vers", "lui", "autour", "au loin"],
+                violet: ["des yeux", "une émotion", "un regard", "une relation", "le spectateur", "la spectatrice", "une question", "fixer", "profond", "profonde", "entre"]
+            },
+            2: {
+                titre: "Björk",
+                jaune: ["l'Europe", "l'Islande", "un artiste", "la famille", "l'âge", "le nord", "la musique", "chanter", "jouer", "entier", "entière", "jeune", "dans", "dès", "plus"],
+                vert: ["un enfant", "un an", "une chanson", "la voix", "enregistrer", "composer", "extraordinaire", "unique", "premier", "première", "doux", "douce", "alors", "avec", "seulement", "à la fois"],
+                violet: ["un projet", "le musicien", "la musicienne", "un film", "la scientifique", "même", "plusieurs"]
+            },
+            3: {
+                titre: "Sintra",
+                jaune: ["le Portugal", "les gens", "un pays", "un monument", "le sommet", "une ville", "une montagne", "le choix", "le touriste", "la visite", "admirer", "construit", "construite", "magnifique"],
+                vert: ["la couleur", "un palais", "un conte", "une fée", "une ruine", "le château", "la région", "rappeler", "il rappelle", "voir", "éclatant", "éclatante", "avec", "depuis"],
+                violet: ["un jardin", "un curieux", "la grotte", "le passage", "étonner", "secret", "secrète"]
+            },
+            4: {
+                titre: "Venise",
+                jaune: ["l'Italie", "un an", "une personne", "le costume", "un tissu", "fêter", "se déguiser", "dissimuler", "superbe", "multicolore", "éblouissant", "en", "pour", "avec", "qui"],
+                vert: ["un masque", "le papier", "un personnage", "le théâtre", "une semaine", "une fête", "une occasion", "un pauvre", "faire", "fantastique", "autrefois", "aussi", "ensemble"],
+                violet: ["un jour", "un spectacle", "arriver", "assister", "lors", "partout"]
+            },
+            5: {
+                titre: "Le peuple loup",
+                jaune: ["l'Irlande", "un père", "un loup", "une louve", "le chasseur", "la forêt", "une fille", "le jour", "la nuit", "vivre", "rencontrer", "petit", "petite", "en", "qui"],
+                vert: ["une différence", "la fillette", "un animal", "des animaux", "un ami", "une amie", "un humain", "la mère", "un abri", "la nature", "expliquer", "tuer", "détruire", "chercher", "parti", "que", "malgré"],
+                violet: ["le peuple", "sauvé", "finalement", "tous", "ensemble", "ailleurs"]
+            },
+            6: {
+                titre: "Le guerrier debout",
+                jaune: ["le Sénégal", "un métier", "la connaissance", "le corps", "des yeux", "donner", "sculpter", "ancien", "ancienne", "parfait", "parfaite", "fermé", "humain", "très", "bien"],
+                vert: ["un guerrier", "une guerrière", "un mètre", "la matière", "la teinte", "le beige", "le brun", "la peau", "la tête", "un gardien", "atteindre", "rappeler", "baisser", "droit", "droite", "éreinté", "dont", "mais", "comme"],
+                violet: ["la force", "le regard", "la bienveillance", "la peine", "plein", "pleine", "peut-être"]
+            },
+            7: {
+                titre: "Tombouctou",
+                jaune: ["l'Afrique", "le Mali", "une cité", "la terre", "un maçon", "une année", "une équipe", "la façade", "un bâtiment", "le désert", "menacer", "incroyable", "voici", "chaque"],
+                vert: ["un siècle", "un habitant", "le passage", "un commerçant", "un lieu", "la tolérance", "abriter", "célèbre", "presque", "ici", "pour"],
+                violet: ["une bibliothèque", "une mosquée", "le manuscrit", "la justice", "la musique", "la médecine", "évoquer", "ancien", "ancienne", "précieux", "précieuse", "dans"]
+            },
+            8: {
+                titre: "Akissi",
+                jaune: ["la Côte d'Ivoire", "une fille", "la bande dessinée", "les parents", "le frère", "le singe", "le temps", "raconter", "habiter", "se disputer", "petit", "petite", "en", "avec", "tout"],
+                vert: ["la fillette", "le bonbon", "la bêtise", "la peur", "le caractère", "l'enfance", "un auteur", "une autrice", "adorer", "drôle", "rien"],
+                violet: ["le soir", "le feu", "le cousin", "un grand-père", "une histoire", "un enfant", "se retrouver", "écouter", "passionner", "vieux"]
+            },
+            9: {
+                titre: "Toutankhamon",
+                jaune: ["l'Égypte", "un dieu", "la mort", "le voyage", "la vie", "le seuil", "le corps", "abriter", "penser", "pareil", "éternel", "vers"],
+                vert: ["une tombe", "un objet", "le réveil", "montrer", "trouver", "personnel", "plein", "pleine", "toujours", "afin que", "dès"],
+                violet: ["une feuille", "l'or", "un détail", "la momie", "un masque", "la pierre", "une merveille", "protéger", "funéraire", "recouvert", "recouverte", "précieux", "précieuse", "trois", "mille"]
+            },
+            10: {
+                titre: "Pata Pata",
+                jaune: ["l'Afrique du Sud", "une chanson", "la voix", "le chanteur", "la chanteuse", "la planète", "résonner", "surnommé", "entier", "entière", "grâce à", "à travers"],
+                vert: ["un pays", "une loi", "une époque", "l'engagement", "un exil", "dénoncer", "exister", "conduire", "raciste", "politique", "dans", "malheureusement"],
+                violet: ["une femme", "un homme", "un combat", "une action", "la paix", "le droit", "participer", "défendre", "continuer", "différent", "différente", "pourtant", "toujours"]
+            },
+            11: {
+                titre: "Nouvel an chinois",
+                jaune: ["la Chine", "une année", "le réveillon", "la compagnie", "le membre", "la famille", "la santé", "la réussite", "fêter", "souhaiter", "nouveau", "nouvelle", "important", "très", "depuis", "toujours", "pendant"],
+                vert: ["un temple", "le tambour", "se rassembler", "danser", "ensemble", "ensuite"],
+                violet: ["un parent", "un enfant", "la rue", "le lampion", "une ombre", "une lumière", "une ambiance", "emmener", "déambuler", "magique", "emmitouflé", "tard", "plus"]
+            },
+            12: {
+                titre: "Ramayana",
+                jaune: ["l'Inde", "l'Asie", "la guerre", "un époux", "une épouse", "le prince", "se dérouler", "raconter", "commencer", "long", "longue", "comment", "pour", "lui", "alors"],
+                vert: ["un dieu", "un singe", "le chagrin", "la blessure", "partir", "chercher", "apporter", "sauter", "guérir", "ému", "par", "au-dessus"],
+                violet: ["le gardien", "la sagesse", "le guerrier", "la princesse", "le roi", "devenir", "gouverner", "libérer", "fidèle", "grâce au"]
+            },
+            13: {
+                titre: "Jardin des pruniers à Kameido",
+                jaune: ["le Japon", "une œuvre", "un paysage", "le point", "la vue", "imaginer", "voyager", "génial", "géniale", "apaisant", "apaisante", "original", "grâce au", "avec", "toujours"],
+                vert: ["le mont", "la branche", "la neige", "une fleur", "un bourgeon", "le ciel", "rougeoyant", "rougeoyante", "ici", "là"],
+                violet: ["un personnage", "un villageois", "une villageoise", "un animal", "des animaux", "un oiseau", "un poisson", "la nageoire", "un pêcheur", "souvent", "mais", "aussi", "surtout"]
+            },
+            14: {
+                titre: "Angkor Vat",
+                jaune: ["le Cambodge", "un vestige", "un joyau", "un lieu", "le pays", "le drapeau", "un touriste", "un temple", "un niveau", "visiter", "apparaitre", "nombreux", "composé", "plusieurs"],
+                vert: ["le mur", "le bâtiment", "un tableau", "la pierre", "un homme", "un animal", "un dieu", "un rival", "un combat", "représenter", "ainsi", "contre"],
+                violet: ["un morceau", "le végétal", "tomber", "immense", "puissant", "exotique", "autrefois", "aujourd'hui", "complètement"]
+            },
+            15: {
+                titre: "Les jardins près de la baie",
+                jaune: ["Singapour", "un habitant", "la ville", "le jardin", "une baie", "une plante", "un parc", "se transformer", "voir", "imaginer", "immense", "environ", "près", "dans"],
+                vert: ["la serre", "la température", "un climat", "un exemple", "un ingénieur", "une forêt", "le nuage", "une cascade", "la jungle", "assurer", "reproduire", "particulier", "particulière", "tropical", "même", "il y a"],
+                violet: ["la nuit", "la lumière", "briller", "géant", "géante", "construit", "construite", "artificiel"]
+            },
+            16: {
+                titre: "La musique de l'eau",
+                jaune: ["le Vanuatu", "l'Océanie", "une musique", "un lien", "un humain", "un siècle", "la communauté", "un art", "la façon", "décrire", "pratiquer", "étroit", "très", "déjà", "depuis"],
+                vert: ["un instrument", "une matière", "la voix", "une émotion", "le poème", "le mystère", "une eau", "la rivière", "l'océan", "végétal", "différent", "différente"],
+                violet: ["la main", "la force", "la douceur", "s'échapper", "frapper", "caresser", "étonnant", "étonnante", "après", "absolument"]
+            },
+            17: {
+                titre: "Opéra de Sydney",
+                jaune: ["l'Australie", "l'opéra", "un emblème", "un monument", "un siècle", "la mémoire", "un édifice", "impressionner", "rester", "véritable", "spécial", "spéciale", "célèbre", "très", "longtemps", "en effet"],
+                vert: ["le toit", "un coquillage", "le bateau", "le vent", "prétendre", "représenter", "gonflé", "certains", "d'autres"],
+                violet: ["un spectacle", "une exposition", "la terrasse", "la vue", "la ville", "la lumière", "la mer", "se détendre", "extraordinaire", "après"]
+            },
+            18: {
+                titre: "Les tikis",
+                jaune: ["la Polynésie", "une statue", "la tête", "des yeux", "le corps", "la position", "posséder", "français", "française", "gros", "grosse", "terrible", "ouvert", "ouverte", "précis", "précise", "toujours"],
+                vert: ["une sculpture", "un dieu", "un ancêtre", "une apparence", "le collier", "un objet", "étrange", "puissant", "puissante", "encore"],
+                violet: ["un pouvoir", "un esprit", "le danger", "penser", "protéger", "éloigner", "magique", "mauvais", "mauvaise", "chez soi"]
+            },
+            19: {
+                titre: "Montagne-qui-fume",
+                jaune: ["Samoa", "une ile", "un humain", "le rocher", "le feu", "dire", "posséder", "donner", "refuser", "grand", "autrefois", "depuis", "longtemps", "pourtant"],
+                vert: ["le garçon", "un cadeau", "une flamme", "la colère", "le courage", "apporter", "jeune", "soudain", "avec", "malgré", "aussitôt"],
+                violet: ["la fumée", "la montagne", "dangereux", "dangereuse", "aujourd'hui", "grâce", "bien", "mieux", "où", "encore", "parfois"]
+            },
+            20: {
+                titre: "Les wakas",
+                jaune: ["la Nouvelle-Zélande", "un habitant", "un océan", "la terre", "un peuple", "le passé", "le voyage", "une origine", "une histoire", "traverser", "s'installer", "respecter", "premier", "première", "profondément", "sur", "pour"],
+                vert: ["le bateau", "un ancêtre", "une ile", "le soleil", "une étoile", "l'aide", "commencer", "arriver", "se diriger", "généalogique", "par"],
+                violet: ["une allure", "une extrémité", "léger", "légère", "rapide", "allongé", "sculpté", "plutôt", "richement"]
+            },
+            21: {
+                titre: "Le magicien d'Oz",
+                jaune: ["les États-Unis", "un récit", "une aventure", "le pays", "la maison", "un garçon", "une fille", "raconter", "emporter", "s'envoler", "atterrir", "merveilleux", "merveilleuse", "dévastateur", "dévastatrice", "jeune"],
+                vert: ["le nord", "l'ouest", "le frère", "la sœur", "une fée", "un villageois", "une villageoise", "un sorcier", "une sorcière", "un protecteur", "une protectrice", "un étranger", "une étrangère", "tomber", "apprécier", "méchant", "méchante", "furieux", "furieuse", "bon", "bonne", "car", "contre", "heureusement"],
+                violet: ["le fer", "un homme", "une femme", "le voyageur", "la voyageuse", "le magicien", "la magicienne", "rencontrer", "aider"]
+            },
+            22: {
+                titre: "Les géoglyphes de Nazca",
+                jaune: ["le Pérou", "un peuple", "un dessin", "le ciel", "le bord", "un avion", "un exemple", "tracer", "admirer", "géant", "géante", "depuis"],
+                vert: ["une ligne", "un être", "un motif", "le trait", "la pierre", "un symbole", "représenter", "dessiner", "précis", "précise", "vivant", "vivante", "géométrique", "étonnant", "particulièrement", "entre", "mais", "pourquoi"],
+                violet: ["un scientifique", "une question", "un calendrier", "le moyen", "la terre", "étudier", "nombreux", "sous"]
+            },
+            23: {
+                titre: "Le colibri",
+                jaune: ["l'Amazonie", "l'histoire", "un cœur", "un animal", "des animaux", "la forêt", "le fleuve", "un insecte", "un oiseau", "un mammifère", "se dérouler", "immense", "primaire", "nombreux", "sauvage", "ensemble", "près"],
+                vert: ["la fleur", "la journée", "un incendie", "le passage", "dévaster", "butiner", "parmi", "soudain"],
+                violet: ["le sens", "un autre", "le feu", "fuir", "apporter", "éteindre", "être", "utile", "au lieu de", "comme"]
+            },
+            24: {
+                titre: "Les alebrijes",
+                jaune: ["le Mexique", "un rêve", "la fièvre", "un artisan", "une idée", "la forêt", "une créature", "donner", "imaginer", "étrange", "provoqué", "fantastique", "par", "dans"],
+                vert: ["du papier", "la couleur", "une queue", "une œuvre", "une aile", "représenter", "peindre", "décorer", "imiter", "plaire", "fabuleux", "parfois", "alors", "beaucoup"],
+                violet: ["le défilé", "le lieu", "la musique", "la rue", "la vie", "la créature", "sembler", "gigantesque"]
+            },
+            25: {
+                titre: "Les totems",
+                jaune: ["le Canada", "un poteau", "le ciel", "le bois", "un genre", "une sculpture", "une mémoire", "un village", "une famille", "un ancêtre", "un totem", "se dresser", "nommer", "grand", "important", "vers"],
+                vert: ["l'Amérique", "une figure", "le peuple", "le nord", "pouvoir", "se composer", "humain", "humaine", "imaginaire", "symbolique", "premier", "première", "par"],
+                violet: ["un patrimoine", "une tradition", "considérer", "protéger", "permettre", "se souvenir", "culturel", "ancien", "ancienne", "maintenant"]
+            }
+        };
+
+        // État de l'application
+        let currentUser = null;
+        let selectedUser = null;
+        let userData = {};
+        let selectedLists = new Set();
+        let practiceSession = {
+            boxNumber: null,
+            words: [],
+            currentIndex: 0,
+            correct: 0,
+            currentWord: null
+        };
+
+        // Génération des étoiles
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // Gestion du stockage
+        function loadUserData() {
+            const data = localStorage.getItem('dicteeLeitnerData');
+            return data ? JSON.parse(data) : {};
+        }
+
+        function saveUserData() {
+            localStorage.setItem('dicteeLeitnerData', JSON.stringify(userData));
+        }
+
+        // Vérification des jours de révision
+        function canReviewBoxToday(boxNumber) {
+            const today = new Date().getDay(); // 0 = dimanche, 1 = lundi, etc.
+            
+            if (boxNumber === 1) {
+                return true; // Tous les jours
+            } else if (boxNumber === 2) {
+                return [2, 4, 6].includes(today); // Mardi, Jeudi, Samedi
+            } else if (boxNumber === 3) {
+                return [0, 3].includes(today); // Dimanche, Mercredi
+            }
+            return false;
+        }
+
+        function getDayName(boxNumber) {
+            const days = {
+                1: 'tous les jours',
+                2: 'mardi, jeudi et samedi',
+                3: 'mercredi et dimanche'
+            };
+            return days[boxNumber] || '';
+        }
+
+        function getTodayKey() {
+            const today = new Date();
+            return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        }
+
+        function cleanOldReviewedWords() {
+            if (!currentUser) return;
+            
+            const user = userData[currentUser];
+            const todayKey = getTodayKey();
+            
+            // Initialiser reviewedToday si nécessaire
+            if (!user.reviewedToday) {
+                user.reviewedToday = [];
+            }
+            
+            // Si c'est un nouveau jour, vider la liste
+            const lastReviewDate = localStorage.getItem('lastReviewDate_' + currentUser);
+            if (lastReviewDate !== todayKey) {
+                user.reviewedToday = [];
+                localStorage.setItem('lastReviewDate_' + currentUser, todayKey);
+                saveUserData();
+            }
+        }
+
+        function initializeUser(username) {
+            if (!userData[username]) {
+                userData[username] = {
+                    password: '',
+                    lists: {},
+                    boxes: {
+                        1: [],
+                        2: [],
+                        3: []
+                    },
+                    reviewedToday: []
+                };
+            }
+        }
+
+        // Gestion de la connexion
+        function displayUserList() {
+            const container = document.getElementById('userListContainer');
+            const users = Object.keys(userData);
+            
+            if (users.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-light); margin-bottom: 20px;">Aucun utilisateur. Crée ton espace !</p>';
+            } else {
+                container.innerHTML = users.map(username => `
+                    <div class="user-item" onclick="selectUser('${username}')">
+                        <span class="user-name">👤 ${username}</span>
+                        <button class="delete-user" onclick="deleteUser(event, '${username}')">Supprimer</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function selectUser(username) {
+            selectedUser = username;
+            document.getElementById('newUserForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('loginPassword').focus();
+        }
+
+        function cancelLogin() {
+            selectedUser = null;
+            document.getElementById('newUserForm').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+        }
+
+        function showTeacherLogin() {
+            document.getElementById('newUserForm').classList.add('hidden');
+            document.getElementById('teacherLoginForm').classList.remove('hidden');
+            document.getElementById('teacherPassword').focus();
+        }
+
+        function cancelTeacherLogin() {
+            document.getElementById('newUserForm').classList.remove('hidden');
+            document.getElementById('teacherLoginForm').classList.add('hidden');
+            document.getElementById('teacherPassword').value = '';
+        }
+
+        function loginTeacher() {
+            const password = document.getElementById('teacherPassword').value;
+            
+            if (password !== 'Legouve59') {
+                alert('Mot de passe incorrect !');
+                document.getElementById('teacherPassword').value = '';
+                return;
+            }
+            
+            showTeacherPage();
+        }
+
+        function showTeacherPage() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('teacherPage').classList.remove('hidden');
+            createTeacherEditor();
+        }
+
+        function logoutTeacher() {
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('teacherPage').classList.add('hidden');
+            document.getElementById('newUserForm').classList.remove('hidden');
+            document.getElementById('teacherLoginForm').classList.add('hidden');
+            document.getElementById('teacherPassword').value = '';
+        }
+
+        function createUser() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value;
+
+            if (!username) {
+                alert('Entre ton prénom !');
+                return;
+            }
+
+            if (!password) {
+                alert('Choisis un mot de passe !');
+                return;
+            }
+
+            if (userData[username]) {
+                alert('Ce prénom existe déjà !');
+                return;
+            }
+
+            initializeUser(username);
+            userData[username].password = password;
+            saveUserData();
+            currentUser = username;
+            
+            showMainPage();
+        }
+
+        function loginUser() {
+            const password = document.getElementById('loginPassword').value;
+
+            if (!selectedUser || !userData[selectedUser]) {
+                alert('Utilisateur non trouvé !');
+                return;
+            }
+
+            if (userData[selectedUser].password !== password) {
+                alert('Mot de passe incorrect !');
+                document.getElementById('loginPassword').value = '';
+                return;
+            }
+
+            currentUser = selectedUser;
+            cleanOldReviewedWords();
+            showMainPage();
+        }
+
+        function deleteUser(event, username) {
+            event.stopPropagation();
+            if (confirm(`Supprimer l'utilisateur ${username} et toutes ses données ?`)) {
+                delete userData[username];
+                saveUserData();
+                displayUserList();
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedUser = null;
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('newUserForm').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function showMainPage() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('mainPage').classList.remove('hidden');
+            document.getElementById('currentUserName').textContent = `👤 ${currentUser}`;
+            
+            cleanOldReviewedWords();
+            updateBoxesDisplay();
+            updateProgressDisplay();
+            createDicteeGrid();
+        }
+
+        // Gestion des onglets
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Affichage des boîtes
+        function updateBoxesDisplay() {
+            const user = userData[currentUser];
+            
+            for (let i = 1; i <= 3; i++) {
+                const canReview = canReviewBoxToday(i);
+                const allWords = user.boxes[i];
+                const reviewedToday = user.reviewedToday || [];
+                const availableWords = allWords.filter(w => !reviewedToday.includes(w));
+                const count = availableWords.length;
+                const words = availableWords.slice(0, 10);
+                
+                document.getElementById(`box${i}Count`).textContent = count;
+                
+                let previewHTML = '';
+                if (words.length > 0) {
+                    previewHTML = words.map(w => `<div class="word-preview">• ${w}</div>`).join('');
+                } else if (allWords.length > 0 && availableWords.length === 0) {
+                    previewHTML = '<div class="word-preview" style="color: var(--secondary);">✓ Tous les mots révisés aujourd\'hui</div>';
+                } else {
+                    previewHTML = '<div class="word-preview" style="color: var(--text-light);">Aucun mot</div>';
+                }
+                
+                if (!canReview) {
+                    previewHTML = `<div class="word-preview" style="color: var(--danger); font-weight: 600;">⏰ Disponible ${getDayName(i)}</div>`;
+                }
+                
+                document.getElementById(`box${i}Preview`).innerHTML = previewHTML;
+                
+                // Désactiver le bouton si impossible de réviser
+                const btn = document.querySelector(`.leitner-box.box${i} .btn-practice`);
+                if (btn) {
+                    btn.disabled = !canReview || count === 0;
+                    btn.style.opacity = (!canReview || count === 0) ? '0.5' : '1';
+                    btn.style.cursor = (!canReview || count === 0) ? 'not-allowed' : 'pointer';
+                }
+            }
+        }
+
+        function showBoxWords(boxNumber) {
+            const user = userData[currentUser];
+            const allWords = user.boxes[boxNumber];
+            const reviewedToday = user.reviewedToday || [];
+            const words = allWords.filter(w => !reviewedToday.includes(w));
+            
+            if (allWords.length === 0) {
+                alert(`La boîte ${boxNumber} est vide !`);
+                return;
+            }
+
+            let content = `<h2 class="modal-title">Boîte ${boxNumber} (${words.length} mots disponibles / ${allWords.length} total)</h2>`;
+            
+            if (words.length > 0) {
+                content += `<div style="max-height: 400px; overflow-y: auto;">
+                    ${words.map(w => `<div class="word-preview" style="padding: 8px; border-bottom: 1px solid #E5E7EB;">• ${w}</div>`).join('')}
+                </div>`;
+            } else {
+                content += `<p style="color: var(--secondary); text-align: center; padding: 20px;">Tous les mots ont été révisés aujourd'hui !</p>`;
+            }
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    ${content}
+                    <button class="close-modal btn" onclick="this.closest('.modal').remove()">Fermer</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        }
+
+        // Progression
+        function updateProgressDisplay() {
+            const user = userData[currentUser];
+            const lists = Object.keys(user.lists);
+            
+            const container = document.getElementById('progressList');
+            
+            if (lists.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 20px;">Aucune liste ajoutée. Va dans "Ajouter des listes" !</p>';
+                return;
+            }
+
+            container.innerHTML = lists.map(listName => {
+                const list = user.lists[listName];
+                const total = list.words.length;
+                const inBox1 = list.words.filter(w => user.boxes[1].includes(w)).length;
+                const inBox2 = list.words.filter(w => user.boxes[2].includes(w)).length;
+                const inBox3 = list.words.filter(w => user.boxes[3].includes(w)).length;
+                const mastered = total - inBox1 - inBox2 - inBox3;
+                const progress = total > 0 ? Math.round((mastered / total) * 100) : 0;
+
+                return `
+                    <div class="progress-item">
+                        <div style="font-weight: 600; min-width: 200px;">${listName}</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: ${progress}%"></div>
+                        </div>
+                        <div style="font-weight: 600; color: var(--success); min-width: 80px;">${mastered}/${total}</div>
+                        <button class="delete-list-btn" onclick="deleteList('${listName}')">Supprimer</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteList(listName) {
+            if (!confirm(`Supprimer la liste "${listName}" ?`)) return;
+
+            const user = userData[currentUser];
+            const words = user.lists[listName].words;
+
+            // Retirer les mots de toutes les boîtes
+            for (let i = 1; i <= 3; i++) {
+                user.boxes[i] = user.boxes[i].filter(w => !words.includes(w));
+            }
+
+            delete user.lists[listName];
+            saveUserData();
+            updateBoxesDisplay();
+            updateProgressDisplay();
+        }
+
+        // Sélection de listes
+        function createDicteeGrid() {
+            const grid = document.getElementById('dicteeGrid');
+            selectedLists.clear();
+            
+            grid.innerHTML = '';
+            for (let i = 1; i <= 25; i++) {
+                const card = document.createElement('div');
+                card.className = 'dictee-card';
+                card.innerHTML = `
+                    <div class="dictee-number">${DICTEES_DATA[i].titre}</div>
+                    <div class="color-options">
+                        <div class="color-option jaune" data-dictee="${i}" data-color="jaune" onclick="toggleColor(this)">
+                            Jaune
+                        </div>
+                        <div class="color-option vert" data-dictee="${i}" data-color="vert" onclick="toggleColor(this)">
+                            Vert
+                        </div>
+                        <div class="color-option violet" data-dictee="${i}" data-color="violet" onclick="toggleColor(this)">
+                            Violet
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+        }
+
+        function toggleColor(element) {
+            const dictee = element.dataset.dictee;
+            const color = element.dataset.color;
+            const dicteeNum = parseInt(dictee);
+            const titre = DICTEES_DATA[dicteeNum].titre;
+            const listKey = `${titre} - ${color}`;
+            
+            element.classList.toggle('selected');
+            
+            if (element.classList.contains('selected')) {
+                selectedLists.add(JSON.stringify({ dicteeNum, color, listKey }));
+            } else {
+                selectedLists.delete(JSON.stringify({ dicteeNum, color, listKey }));
+            }
+        }
+
+        function addSelectedLists() {
+            if (selectedLists.size === 0) {
+                alert('Sélectionne au moins une liste !');
+                return;
+            }
+
+            const user = userData[currentUser];
+            let addedCount = 0;
+            
+            selectedLists.forEach(listJSON => {
+                const { dicteeNum, color, listKey } = JSON.parse(listJSON);
+                const words = DICTEES_DATA[dicteeNum][color];
+
+                if (!user.lists[listKey]) {
+                    user.lists[listKey] = { words: [...words] };
+                    
+                    // Ajouter tous les mots dans la boîte 1
+                    words.forEach(word => {
+                        if (!user.boxes[1].includes(word)) {
+                            user.boxes[1].push(word);
+                        }
+                    });
+                    addedCount++;
+                }
+            });
+
+            saveUserData();
+            selectedLists.clear();
+            createDicteeGrid();
+            updateBoxesDisplay();
+            updateProgressDisplay();
+            
+            showNotification(`✅ ${addedCount} liste(s) ajoutée(s) avec succès !`);
+        }
+
+        // Notifications
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.4s ease-out reverse';
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+
+        // Espace enseignant
+        function createTeacherEditor() {
+            const container = document.getElementById('teacherEditor');
+            container.innerHTML = '';
+            
+            const grid = document.createElement('div');
+            grid.className = 'dictee-editor-grid';
+            
+            for (let i = 1; i <= 25; i++) {
+                const card = document.createElement('div');
+                card.className = 'dictee-editor-card';
+                card.innerHTML = `
+                    <div class="dictee-editor-title">Dictée ${i}</div>
+                    
+                    <div class="color-section">
+                        <div class="color-section-title" style="color: var(--primary); font-size: 1.1rem;">📝 Titre personnalisé</div>
+                        <input type="text" 
+                               class="word-list-editor" 
+                               style="min-height: auto; height: 45px;"
+                               data-dictee="${i}" 
+                               placeholder="Ex: Le roi de la forêt"
+                               value="${DICTEES_DATA[i].titre}"
+                               onchange="updateDicteeTitre(${i}, this.value)">
+                    </div>
+                    
+                    <div class="color-section">
+                        <div class="color-section-title jaune">🟡 Jaune (mots simples)</div>
+                        <textarea class="word-list-editor" 
+                                  data-dictee="${i}" 
+                                  data-color="jaune"
+                                  placeholder="Entrez les mots séparés par des virgules"
+                                  onchange="updateDicteeData(${i}, 'jaune', this.value)">${DICTEES_DATA[i].jaune.join(', ')}</textarea>
+                    </div>
+                    
+                    <div class="color-section">
+                        <div class="color-section-title vert">🟢 Vert (mots moyens)</div>
+                        <textarea class="word-list-editor" 
+                                  data-dictee="${i}" 
+                                  data-color="vert"
+                                  placeholder="Entrez les mots séparés par des virgules"
+                                  onchange="updateDicteeData(${i}, 'vert', this.value)">${DICTEES_DATA[i].vert.join(', ')}</textarea>
+                    </div>
+                    
+                    <div class="color-section">
+                        <div class="color-section-title violet">🟣 Violet (mots difficiles)</div>
+                        <textarea class="word-list-editor" 
+                                  data-dictee="${i}" 
+                                  data-color="violet"
+                                  placeholder="Entrez les mots séparés par des virgules"
+                                  onchange="updateDicteeData(${i}, 'violet', this.value)">${DICTEES_DATA[i].violet.join(', ')}</textarea>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+            
+            container.appendChild(grid);
+        }
+
+        function updateDicteeTitre(dicteeNum, titre) {
+            DICTEES_DATA[dicteeNum].titre = titre.trim() || `Dictée ${dicteeNum}`;
+        }
+
+        function updateDicteeData(dicteeNum, color, value) {
+            const words = value.split(',')
+                .map(w => w.trim().toLowerCase())
+                .filter(w => w.length > 0);
+            
+            DICTEES_DATA[dicteeNum][color] = words;
+        }
+
+        function saveAndExportHTML() {
+            showNotification('⏳ Génération du fichier HTML en cours...');
+            
+            try {
+                // Récupérer tout le HTML du document
+                let fullHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+                
+                // Construire la nouvelle déclaration DICTEES_DATA
+                let newDataDeclaration = 'const DICTEES_DATA = {\n';
+                for (let i = 1; i <= 25; i++) {
+                    newDataDeclaration += `    ${i}: {\n`;
+                    newDataDeclaration += `        titre: ${JSON.stringify(DICTEES_DATA[i].titre)},\n`;
+                    newDataDeclaration += `        jaune: ${JSON.stringify(DICTEES_DATA[i].jaune)},\n`;
+                    newDataDeclaration += `        vert: ${JSON.stringify(DICTEES_DATA[i].vert)},\n`;
+                    newDataDeclaration += `        violet: ${JSON.stringify(DICTEES_DATA[i].violet)}\n`;
+                    newDataDeclaration += `    }${i < 25 ? ',' : ''}\n`;
+                }
+                newDataDeclaration += '};';
+                
+                // Trouver et remplacer DICTEES_DATA
+                const startPattern = /const DICTEES_DATA\s*=\s*/;
+                const startMatch = fullHTML.match(startPattern);
+                
+                if (startMatch) {
+                    const startIndex = startMatch.index;
+                    const afterEquals = fullHTML.substring(startIndex + startMatch[0].length);
+                    
+                    // Déterminer si c'est une IIFE ou un objet direct
+                    if (afterEquals.trimStart().startsWith('(() =>') || afterEquals.trimStart().startsWith('(function')) {
+                        // C'est une IIFE - trouver la fin avec );
+                        let depth = 0;
+                        let inFunction = false;
+                        let endIndex = -1;
+                        
+                        for (let i = 0; i < afterEquals.length; i++) {
+                            const char = afterEquals[i];
+                            
+                            if (char === '(') depth++;
+                            if (char === ')') {
+                                depth--;
+                                if (depth === 0 && inFunction) {
+                                    for (let j = i + 1; j < afterEquals.length; j++) {
+                                        if (afterEquals[j] === ';') {
+                                            endIndex = startIndex + startMatch[0].length + j + 1;
+                                            break;
+                                        }
+                                        if (!/\s/.test(afterEquals[j])) break;
+                                    }
+                                    break;
+                                }
+                            }
+                            if (char === '>' && i > 0 && afterEquals[i-1] === '=') {
+                                inFunction = true;
+                            }
+                        }
+                        
+                        if (endIndex > 0) {
+                            const before = fullHTML.substring(0, startIndex);
+                            const after = fullHTML.substring(endIndex);
+                            fullHTML = before + newDataDeclaration + after;
+                        }
+                    } else {
+                        // C'est un objet direct - compter les accolades
+                        let depth = 0;
+                        let started = false;
+                        let endIndex = -1;
+                        
+                        for (let i = 0; i < afterEquals.length; i++) {
+                            const char = afterEquals[i];
+                            
+                            if (char === '{') {
+                                depth++;
+                                started = true;
+                            }
+                            if (char === '}') {
+                                depth--;
+                                if (started && depth === 0) {
+                                    for (let j = i + 1; j < afterEquals.length; j++) {
+                                        if (afterEquals[j] === ';') {
+                                            endIndex = startIndex + startMatch[0].length + j + 1;
+                                            break;
+                                        }
+                                        if (!/\s/.test(afterEquals[j])) break;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (endIndex > 0) {
+                            const before = fullHTML.substring(0, startIndex);
+                            const after = fullHTML.substring(endIndex);
+                            fullHTML = before + newDataDeclaration + after;
+                        }
+                    }
+                }
+                
+                // Nettoyer l'état des pages
+                fullHTML = fullHTML.replace(
+                    /<div id="loginPage" class="login-page hidden">/,
+                    '<div id="loginPage" class="login-page">'
+                );
+                fullHTML = fullHTML.replace(
+                    /<div id="mainPage" class="main-page">/,
+                    '<div id="mainPage" class="main-page hidden">'
+                );
+                fullHTML = fullHTML.replace(
+                    /<div id="teacherPage" class="main-page">/,
+                    '<div id="teacherPage" class="main-page hidden">'
+                );
+                
+                // Télécharger le fichier
+                const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const date = new Date().toISOString().split('T')[0];
+                a.download = `dictee-leitner-personnalise-${date}.html`;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showNotification('✅ Fichier HTML téléchargé avec vos modifications !');
+            } catch (error) {
+                console.error('Erreur:', error);
+                showNotification('❌ Erreur: ' + error.message);
+            }
+        }
+
+
+        // Révision
+        function startPractice(boxNumber) {
+            // Vérifier si on peut réviser cette boîte aujourd'hui
+            if (!canReviewBoxToday(boxNumber)) {
+                alert(`La boîte ${boxNumber} ne peut être révisée que ${getDayName(boxNumber)} !`);
+                return;
+            }
+
+            const user = userData[currentUser];
+            const reviewedToday = user.reviewedToday || [];
+            const availableWords = user.boxes[boxNumber].filter(w => !reviewedToday.includes(w));
+
+            if (availableWords.length === 0) {
+                if (user.boxes[boxNumber].length > 0) {
+                    alert(`Tous les mots de la boîte ${boxNumber} ont déjà été révisés aujourd'hui !`);
+                } else {
+                    alert(`La boîte ${boxNumber} est vide !`);
+                }
+                return;
+            }
+
+            // Mélanger les mots
+            const words = [...availableWords];
+            for (let i = words.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [words[i], words[j]] = [words[j], words[i]];
+            }
+
+            practiceSession = {
+                boxNumber,
+                words,
+                currentIndex: 0,
+                correct: 0,
+                currentWord: null
+            };
+
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('practicePage').classList.remove('hidden');
+            document.getElementById('practiceBoxNumber').textContent = boxNumber;
+            
+            showNextWord();
+        }
+
+        function showNextWord() {
+            if (practiceSession.currentIndex >= practiceSession.words.length) {
+                endPractice();
+                return;
+            }
+
+            practiceSession.currentWord = practiceSession.words[practiceSession.currentIndex];
+            
+            document.getElementById('wordNumber').textContent = 
+                `Mot ${practiceSession.currentIndex + 1} sur ${practiceSession.words.length}`;
+            document.getElementById('practiceCorrect').textContent = practiceSession.correct;
+            document.getElementById('practiceTotal').textContent = practiceSession.currentIndex;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('answerInput').className = 'answer-input';
+            document.getElementById('feedbackContainer').innerHTML = `
+                <div style="text-align: center; color: var(--text-light);">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">💡</div>
+                    <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 10px;">Conseil</p>
+                    <p style="font-size: 1rem;">Écoute bien le mot et écris-le lettre par lettre.</p>
+                    <p style="font-size: 0.9rem; margin-top: 15px; opacity: 0.8;">Le feedback s'affichera ici après validation</p>
+                </div>
+            `;
+            
+            // Lire automatiquement le mot
+            speakWord();
+        }
+
+        function speakWord() {
+            const word = practiceSession.currentWord;
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'fr-FR';
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        function typeKey(char) {
+            const input = document.getElementById('answerInput');
+            input.value += char;
+            input.focus();
+        }
+
+        function typeBackspace() {
+            const input = document.getElementById('answerInput');
+            input.value = input.value.slice(0, -1);
+            input.focus();
+        }
+
+        function validateAnswer() {
+            const userAnswer = document.getElementById('answerInput').value.toLowerCase().trim();
+            const correctWord = practiceSession.currentWord;
+            const isCorrect = userAnswer === correctWord;
+
+            const input = document.getElementById('answerInput');
+            const feedbackContainer = document.getElementById('feedbackContainer');
+
+            if (isCorrect) {
+                input.classList.add('correct');
+                practiceSession.correct++;
+                
+                feedbackContainer.innerHTML = `
+                    <div style="text-align: center;">
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 3rem; margin-bottom: 20px;">🎉</div>
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 15px;">
+                            Bravo !
+                        </div>
+                        <div style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 20px;">
+                            Tu as bien écrit le mot
+                        </div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 30px; padding: 15px; background: rgba(78, 205, 196, 0.1); border-radius: 15px;">
+                            ${correctWord}
+                        </div>
+                        <button class="btn" onclick="moveWordAndContinue(true)" style="font-size: 1.1rem;">
+                            ➡️ Mot suivant
+                        </button>
+                    </div>
+                `;
+
+            } else {
+                input.classList.add('incorrect');
+                
+                feedbackContainer.innerHTML = `
+                    <div style="text-align: center;">
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 3rem; margin-bottom: 20px;">💭</div>
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--danger); margin-bottom: 15px;">
+                            Pas tout à fait...
+                        </div>
+                        <div style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 15px;">
+                            Ta réponse :
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: 600; color: var(--danger); margin-bottom: 15px; padding: 10px; background: rgba(230, 57, 70, 0.1); border-radius: 10px; text-decoration: line-through;">
+                            ${userAnswer || '(vide)'}
+                        </div>
+                        <div style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 15px;">
+                            Le mot correct est :
+                        </div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 30px; padding: 15px; background: rgba(78, 205, 196, 0.1); border-radius: 15px;">
+                            ${correctWord}
+                        </div>
+                        <button class="btn" onclick="moveWordAndContinue(false)" style="font-size: 1.1rem;">
+                            ➡️ Mot suivant
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function moveWordAndContinue(isCorrect) {
+            const user = userData[currentUser];
+            const word = practiceSession.currentWord;
+            const currentBox = practiceSession.boxNumber;
+
+            // Ajouter le mot à la liste des mots révisés aujourd'hui
+            if (!user.reviewedToday) {
+                user.reviewedToday = [];
+            }
+            if (!user.reviewedToday.includes(word)) {
+                user.reviewedToday.push(word);
+            }
+
+            // Retirer le mot de la boîte actuelle
+            user.boxes[currentBox] = user.boxes[currentBox].filter(w => w !== word);
+
+            if (isCorrect) {
+                // Mot réussi : progression vers boîte supérieure
+                const nextBox = Math.min(currentBox + 1, 3);
+                if (nextBox <= 3 && !user.boxes[nextBox].includes(word)) {
+                    user.boxes[nextBox].push(word);
+                }
+            } else {
+                // Mot raté : retour en boîte 1
+                if (!user.boxes[1].includes(word)) {
+                    user.boxes[1].push(word);
+                }
+            }
+
+            saveUserData();
+            practiceSession.currentIndex++;
+            showNextWord();
+        }
+
+        function endPractice() {
+            const totalWords = practiceSession.currentIndex;
+            const correctWords = practiceSession.correct;
+            const percentage = totalWords > 0 ? Math.round((correctWords / totalWords) * 100) : 0;
+
+            alert(`Révision terminée !\n\n✅ Réussies : ${correctWords}\n📝 Total : ${totalWords}\n📊 Score : ${percentage}%`);
+
+            document.getElementById('practicePage').classList.add('hidden');
+            document.getElementById('mainPage').classList.remove('hidden');
+            
+            updateBoxesDisplay();
+            updateProgressDisplay();
+        }
+
+        // Initialisation
+        window.onload = function() {
+            createStars();
+            userData = loadUserData();
+            
+            // Initialiser reviewedToday pour les utilisateurs existants
+            Object.keys(userData).forEach(username => {
+                if (!userData[username].reviewedToday) {
+                    userData[username].reviewedToday = [];
+                }
+            });
+            saveUserData();
+            
+            displayUserList();
+        };
+    </script>
+</body>
+</html>
